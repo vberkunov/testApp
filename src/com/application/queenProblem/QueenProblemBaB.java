@@ -37,7 +37,7 @@ public class QueenProblemBaB {
         return true;
     }
 
-    private boolean checkPoint(int col){
+    public boolean checkPoint(int col){
         if (col >= N) {
             return true;
         }

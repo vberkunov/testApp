@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 public class QueenProblem {
     private static final int N = 8;
     private final int[][] chessBoard;
-    private long time;
+    private int k =1;
 
 
 
@@ -14,21 +14,25 @@ public class QueenProblem {
         this.chessBoard = new int[N][N];
     }
 
-    public  void solveProblem(){
-        time = System.currentTimeMillis();
+    public  void solveProblem(int col){
+
+        if (sumOfQueens(chessBoard) == N) {
+            printArr();
+            return ;
+        }
+
+
         for (int i=0; i<N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (chessBoard[i][j] == 0) {
-                    if (checkPoint( i, j)) {
-                        chessBoard[i][j] = 1;
-                        solveProblem();
+
+                if (chessBoard[i][col] == 0) {
+                    if (checkPoint( i, col)) {
+                        chessBoard[i][col] = 1;
+                        solveProblem(col+1);
                     }
-                    if (sumOfQueens(chessBoard) == N) {
-                        return ;
-                    }
-                    chessBoard[i][j] = 0;
+
+                    chessBoard[i][col] = 0;
                 }
-            }
+
         }
     }
 
@@ -62,6 +66,7 @@ public class QueenProblem {
     }
 
     public void printArr(){
+        System.out.printf("%d- \n", k++);
         Arrays.stream(chessBoard).forEach((i) -> {
             Arrays.stream(i).forEach((j) -> System.out.print(j + " "));
             System.out.println();

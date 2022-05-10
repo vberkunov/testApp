@@ -3,7 +3,7 @@ package com.application.knightsTourProblem;
 import java.util.Arrays;
 
 public class KnightsTour {
-    private final static int N = 8;
+    private final static int N = 5 ;
 
     private final static int moveX[] = { 2, 1, -1, -2, -2, -1, 1, 2 };
     private final static int moveY[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
@@ -35,26 +35,28 @@ public class KnightsTour {
             return true;
 
         }
-        for (int i = 0; i < N ; i++) {
+        for (int i = 0; i < 8 ; i++) {
             yNew = y + moveY[i];
             xNew = x + moveX[i];
 
             if (isSafe(xNew, yNew)) {
-                chessBoard[xNew][yNew] = num;
-                if (checkPoint(xNew, yNew, num + 1)) {
-                    return true;
-                } else {
+                    chessBoard[xNew][yNew] = num;
+                    if (checkPoint(xNew, yNew, num + 1)) {
+                        return true;
+                    }
 
                     chessBoard[xNew][yNew] = -1;
+
                 }
+
+
             }
-        }
         return false;
     }
     private boolean isSafe(int x, int y)
     {
 
-        return  (x >= 0 && x < N && y >= 0 && y < N
+        return  (x >=0 && x < N && y >=0 && y < N
                 && chessBoard[x][y] == -1) ;
 
     }
