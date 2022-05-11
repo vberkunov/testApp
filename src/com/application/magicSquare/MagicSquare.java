@@ -1,10 +1,11 @@
 package com.application.magicSquare;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class MagicSquare {
-    private final static int N = 5;
-
 
     public MagicSquare() {
     }
@@ -14,21 +15,21 @@ public class MagicSquare {
     // if i == -1 && j==n -> i=0, j = n-2
     public int[][] generateMagicSOdd(int n){
         int[][] square=new int[n][n];
-        int i = N / 2;
-        int j = N - 1;
+        int i = n / 2;
+        int j = n - 1;
 
-        for (int num = 1; num <= N * N;) {
-            if (i == -1 && j == N) {
-                j = N - 2;
+        for (int num = 1; num <= n * n;) {
+            if (i == -1 && j == n) {
+                j = n - 2;
                 i = 0;
             }
             else {
 
-                if (j == N) {
+                if (j == n) {
                     j = 0;
                 }
                 if (i < 0) {
-                    i = N - 1;
+                    i = n - 1;
                 }
             }
 
@@ -48,6 +49,13 @@ public class MagicSquare {
         }
         return square;
     }
+//    ----------------
+//    |       |       |
+//    |    A  |   B   |
+//    |------ |-------|
+//    |    C  |   D   |
+//    |       |       |
+//     ---------------
 
     public int[][] generateMagicSinglyEven(int n){
         if(n==2){
@@ -56,6 +64,8 @@ public class MagicSquare {
         int[][] square=new int[n][n];
         int[][] quarter;
         quarter=generateMagicSOdd(n/2);
+        System.out.println("Generate quater");
+        printArr(quarter);
         for(int i=0;i<n/2;i++)
             for(int j=0;j<n/2;j++){
                 square[i][j]=quarter[i][j];
@@ -91,15 +101,16 @@ public class MagicSquare {
         return square;
     }
 
-    public void solve(int n){
+    public int[][] solve(int n){
        int[][]square;
         if(n%2!=0) {
             square = generateMagicSOdd(n);
         }
         else {
             square = generateMagicSinglyEven(n);
+
         }
-        printArr(square);
+        return square;
     }
 
     public void printArr(int[][] square){
@@ -108,6 +119,26 @@ public class MagicSquare {
             System.out.println();
         });
         System.out.println("");
+
+    }
+
+    public  void writeToDirectory (String filename, int[][]x)  {
+        String filePath = "C:\\Users\\vital\\Reader\\test\\"+filename+".txt";
+        BufferedWriter outputWriter = null;
+        try {
+            outputWriter = new BufferedWriter(new FileWriter(filePath));
+            for (int i = 0; i < x.length; i++) {
+                for (int j =0; j< x.length; j++) {
+                    outputWriter.write(x[i][j] + " ");
+
+                }
+                outputWriter.newLine();
+            }
+            outputWriter.flush();
+            outputWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

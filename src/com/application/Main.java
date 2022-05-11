@@ -22,7 +22,10 @@ public class Main {
 
         System.out.println("Magic Square Problem solution");
         MagicSquare square = new MagicSquare();
-        square.solve(10);
+        System.out.println("Write solution to file with name solution.txt");
+        square.writeToDirectory("solution",square.solve(10));
+
+
 
 
     }
