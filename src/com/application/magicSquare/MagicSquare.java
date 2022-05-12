@@ -65,7 +65,7 @@ public class MagicSquare {
         int[][] quarter;
         quarter=generateMagicSOdd(n/2);
         System.out.println("Generate quater");
-        printArr(quarter);
+
         for(int i=0;i<n/2;i++)
             for(int j=0;j<n/2;j++){
                 square[i][j]=quarter[i][j];
@@ -73,6 +73,7 @@ public class MagicSquare {
                 square[i][n/2+j]=quarter[i][j]+(n*n)/2;
                 square[n/2+i][j]=quarter[i][j]+3*(n*n)/4;
             }
+
         int k=(n-1)/4;
 
         for(int i=0;i<k;i++){
@@ -92,7 +93,7 @@ public class MagicSquare {
         int temp=square[n/4][k-1];
         square[n/4][k-1]=square[3*n/4][k-1];
         square[3*n/4][k-1]=temp;
-
+        printArr(square);
         //swap the diagonal elements
         temp=square[n/4][k];
         square[n/4][k]=square[3*n/4][k];
