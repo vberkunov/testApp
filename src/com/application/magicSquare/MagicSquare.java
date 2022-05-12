@@ -64,8 +64,10 @@ public class MagicSquare {
         int[][] square=new int[n][n];
         int[][] quarter;
         quarter=generateMagicSOdd(n/2);
-        System.out.println("Generate quater");
-
+        //If we partition the square into four 55 squares and put the numbers 1,2,...,25
+        // in the upper left-hand square by the Siam method, the numbers 26,27,..,50
+        // in the lower right-hand square, then numbers 51,52,...,75 in the upper right-hand square and,
+        // finally, the numbers 76,77,...,100 in the lower left-hand square, then we get the square below.
         for(int i=0;i<n/2;i++)
             for(int j=0;j<n/2;j++){
                 square[i][j]=quarter[i][j];
@@ -73,6 +75,10 @@ public class MagicSquare {
                 square[i][n/2+j]=quarter[i][j]+(n*n)/2;
                 square[n/2+i][j]=quarter[i][j]+3*(n*n)/4;
             }
+
+        //the columns sum to the magic number 505 but the rows do not
+        //we need to do first is exchange the corresponding elements in the upper and lower squares in the first and tenth columns.
+        // Then in column two we exchange corresponding elements in the upper and lower squares except for rows three and eight.
 
         int k=(n-1)/4;
 
@@ -90,11 +96,11 @@ public class MagicSquare {
         }
 
         //undo the unneccessary swap
-        int temp=square[n/4][k-1];
-        square[n/4][k-1]=square[3*n/4][k-1];
+        int temp=square[n/4][k-1];  // 2,4
+        square[n/4][k-1]=square[3*n/4][k-1]; // 7 4
         square[3*n/4][k-1]=temp;
-        printArr(square);
-        //swap the diagonal elements
+
+        // Then we exchange elements in rows three and eight in column three to get the following magic square of order 10.
         temp=square[n/4][k];
         square[n/4][k]=square[3*n/4][k];
         square[3*n/4][k]=temp;
@@ -111,6 +117,7 @@ public class MagicSquare {
             square = generateMagicSinglyEven(n);
 
         }
+        printArr(square);
         return square;
     }
 

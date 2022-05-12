@@ -1,4 +1,4 @@
-package com.application.magicSquare.multithread;
+package com.application.magicSquare.multithread5x5;
 
 public class MagicWorker implements Runnable{
     private int[][]solution;
