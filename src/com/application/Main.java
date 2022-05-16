@@ -1,6 +1,7 @@
 package com.application;
 
 
+import com.application.hashMap.HashMapTest;
 import com.application.knightsTourProblem.KnightsTour;
 import com.application.magicSquare.MagicSquare;
 import com.application.magicSquare.multithread10x10.MagicSquareCreator;
@@ -87,6 +88,10 @@ public class Main {
 
         GirlsAndBoys f = new GirlsAndBoys();
         f.solve();
+
+        System.out.println("HashMap Corruption");
+        HashMapTest test = new HashMapTest();
+        test.testHashMap();
 
     }
 
