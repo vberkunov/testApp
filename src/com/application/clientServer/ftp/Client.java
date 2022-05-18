@@ -77,10 +77,9 @@ public class Client {
                 TcpCommand command = null;
                 if(data.length>1) {
                     command = new TcpCommand(data[0], data[1]);
-                    System.out.println("Cоздали обьект 1");
                 }else {
                     command = new TcpCommand(data[0], "null");
-                    System.out.println("Создали обьект 2");
+
                 }
                 String commandFile = "command.dat";
                 fos = new FileOutputStream(USER_DIR+commandFile);
@@ -123,7 +122,6 @@ public class Client {
     }
 
     private  void getFilesDirectories(String s) {
-        String dat = "some";
 
         System.out.println(s);
 
@@ -134,10 +132,8 @@ public class Client {
         try {
             File file;
             byte[] data;
-            System.out.println("filename" + command);
             file = new File(USER_DIR+command);
             if (file.isFile()) {
-                System.out.println("Это файл комманды");
                 data = new byte[(int) file.length()];
                 fis = new FileInputStream(file);
                 bis = new BufferedInputStream(fis);
@@ -146,9 +142,7 @@ public class Client {
                 os = socket.getOutputStream();
                 dos = new DataOutputStream(os);
                 dos.writeLong((long) data.length);
-                System.out.println("Записали длинну");
                 dos.write(data, 0, data.length);
-                System.out.println("записали файл");
                 dos.flush();
                 System.out.println("Command " + file + " sent to Server.");
             }else
@@ -191,12 +185,12 @@ public class Client {
 
     public  void receiveFile(TcpCommand command){
         try{
-            System.out.println("Зашли в клиента");
+
             is = socket.getInputStream();
             dis = new DataInputStream(is);
             String filename = dis.readUTF();
             if(!filename.equals("File does not exist")) {
-                System.out.println("Прочитали имя " + filename);
+
                 fos = new FileOutputStream("C:\\Users\\vital\\Reader\\test\\src\\com\\application\\clientServer\\ftp\\clientFile\\" + filename);
                 long size = dis.readLong();
                 int pointer;

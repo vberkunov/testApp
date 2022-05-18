@@ -34,11 +34,9 @@ public class ClientListener implements Runnable{
     @Override
     public void run() {
 while (true) {
-    System.out.println("Зашли в сервер");
+
     TcpCommand command = null;
-    System.out.println("Получаем команду");
     receiveCommand();
-    System.out.println("Получили команду");
     try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SERVER_DIR + fileName))) {
         command = (TcpCommand) ois.readObject();
         System.out.println(command.getCommandName());
@@ -55,7 +53,6 @@ while (true) {
         case "DIR":
             System.out.println("List command received at Server");
             sendDirectiroies();
-            System.out.println("Закончили");
             break;
         case "GET":
             System.out.println("Download command received at Server");
@@ -109,17 +106,15 @@ while (true) {
         try {
             DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
             fileName = dis.readUTF();
-            System.out.println("Получили имя");
             System.out.println("");
             FileOutputStream fos = new FileOutputStream(SERVER_DIR+fileName);
             long size = dis.readLong();
-            System.out.println("Получили размер");
 
             int pointer;
             for(byte[] data = new byte[1024]; size > 0L && (pointer = dis.read(data, 0, (int)Math.min((long)data.length, size))) != -1; size -= (long)pointer) {
                 fos.write(data, 0, pointer);
             }
-            System.out.println("записали на сервер");
+
             System.out.println("File " + fileName + " received from client.");
         } catch (IOException var8) {
             System.err.println("Client error. Connection closed.");
@@ -131,7 +126,6 @@ while (true) {
         try {
             DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
             FileOutputStream fos = new FileOutputStream(SERVER_DIR+fileName);
-            System.out.println("Ждем длинну файла");
             long size = dis.readLong();
             System.out.println("Длина: " + size);
             int pointer;
