@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public class ClientListener implements Runnable{
     private Socket clientSocket;
+    private ServerSocket serverSocket;
     public BufferedReader in = null;
     public PrintStream ps = null;
     public DataOutputStream out = null;
@@ -15,10 +16,11 @@ public class ClientListener implements Runnable{
     public static final String SERVER_DIR ="C:\\Users\\vital\\Reader\\test\\src\\com\\application\\clientServer\\ftp\\serverFile\\";
 
 
-    public ClientListener(Socket clientSocket) {
+    public ClientListener(Socket clientSocket, ServerSocket serversocket2) {
 
         try{
             this.clientSocket = clientSocket;
+            this.serverSocket = serversocket2;
             this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
             this.ps = new PrintStream(this.clientSocket.getOutputStream());
 
@@ -92,9 +94,9 @@ while (true) {
         DataOutputStream dos = null;
         System.out.println(response);
         try {
-            os = this.clientSocket.getOutputStream();
+            os = this.serverSocket.accept().getOutputStream();
             dos = new DataOutputStream(os);
-            ps.println(response);
+            dos.writeUTF(response);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +106,8 @@ while (true) {
 
     private void receiveFile() {
         try {
-            DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
+            Socket socket = serverSocket.accept();
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
             fileName = dis.readUTF();
             System.out.println("");
             FileOutputStream fos = new FileOutputStream(SERVER_DIR+fileName);
@@ -124,6 +127,7 @@ while (true) {
 
     private void receiveCommand(){
         try {
+
             DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
             FileOutputStream fos = new FileOutputStream(SERVER_DIR+fileName);
             long size = dis.readLong();
@@ -147,7 +151,8 @@ while (true) {
             BufferedInputStream bis = new BufferedInputStream(fis);
             DataInputStream dis = new DataInputStream(bis);
             dis.readFully(data, 0, data.length);
-            OutputStream os = this.clientSocket.getOutputStream();
+            Socket socket = serverSocket.accept();
+            OutputStream os = socket.getOutputStream();
             DataOutputStream dos = new DataOutputStream(os);
             dos.writeUTF(file.getName());
             dos.writeLong((long)data.length);

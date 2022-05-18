@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Client {
@@ -14,7 +13,7 @@ public class Client {
 
     private static InetAddress host;
     private static final int PORT=3035;
-    private static Socket socket;
+    private static Socket commandSocket;
     public static Scanner sc;
     public static DataInputStream dis = null;
     public static OutputStream os = null;
@@ -31,9 +30,9 @@ public class Client {
         try
         {
             host=InetAddress.getLocalHost();
-            socket = new Socket(host, PORT);
-            ps = new PrintStream(socket.getOutputStream());
-            dis = new DataInputStream(socket.getInputStream());
+            commandSocket = new Socket(host, PORT);
+            ps = new PrintStream(commandSocket.getOutputStream());
+            dis = new DataInputStream(commandSocket.getInputStream());
             sc = new Scanner(System.in);
             System.out.println("Connection opened");
             isConnected = true;
@@ -52,7 +51,7 @@ public class Client {
     public boolean stopConnection(){
         boolean isDisConnected=false;
         try {
-            socket.close();
+            commandSocket.close();
             System.out.println("Connection closed");
             isDisConnected = true;
         } catch (IOException e) {
@@ -83,7 +82,7 @@ public class Client {
                 }
                 String commandFile = "command.dat";
                 fos = new FileOutputStream(USER_DIR+commandFile);
-                dis = new DataInputStream(socket.getInputStream());
+                dis = new DataInputStream(commandSocket.getInputStream());
                 oos = new ObjectOutputStream(fos);
                 oos.writeObject(command);
                 oos.close();
@@ -103,7 +102,7 @@ public class Client {
                         break;
                     case "DIR":
                         client.sendCommand(commandFile);
-                        client.getFilesDirectories(dis.readUTF());
+                        client.getFilesDirectories();
                         break;
                     case "EXIT":
                         client.stopConnection();
@@ -121,9 +120,15 @@ public class Client {
 
     }
 
-    private  void getFilesDirectories(String s) {
+    private  void getFilesDirectories() {
+        try {
+            Socket socket = new Socket(host, 3036);
+            DataInputStream dis2 = new DataInputStream(socket.getInputStream());
+            System.out.println( dis2.readUTF());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        System.out.println(s);
 
 
     }
@@ -139,7 +144,7 @@ public class Client {
                 bis = new BufferedInputStream(fis);
                 dis = new DataInputStream(bis);
                 dis.readFully(data, 0, data.length);
-                os = socket.getOutputStream();
+                os = commandSocket.getOutputStream();
                 dos = new DataOutputStream(os);
                 dos.writeLong((long) data.length);
                 dos.write(data, 0, data.length);
@@ -166,6 +171,7 @@ public class Client {
                 bis = new BufferedInputStream(fis);
                 dis = new DataInputStream(bis);
                 dis.readFully(data, 0, data.length);
+                Socket socket = new Socket(host,3036);
                 os = socket.getOutputStream();
                 dos = new DataOutputStream(os);
                 dos.writeUTF(file.getName());
@@ -185,7 +191,7 @@ public class Client {
 
     public  void receiveFile(TcpCommand command){
         try{
-
+            Socket socket = new Socket(host,3036);
             is = socket.getInputStream();
             dis = new DataInputStream(is);
             String filename = dis.readUTF();
