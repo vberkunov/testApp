@@ -12,7 +12,7 @@ import com.application.queenProblem.QueenProblem;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("Simple Queen Problem solution");
         QueenProblem queenProblem = new QueenProblem();
         queenProblem.solveProblem(0);
