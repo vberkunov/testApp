@@ -63,10 +63,11 @@ public class Client {
 
     public static void main(String[] args) {
         Client client = new Client();
-        client.startConnection();
+
 
         while (true) {
             try{
+                client.startConnection();
                 System.out.println("Please make your choice : \nPUT <filename> - send file " +
                         "\nGET <filename> -receive file \nDIR - get list of files \nYour Choice: ");
 
@@ -149,6 +150,8 @@ public class Client {
                 dos.writeLong((long) data.length);
                 dos.write(data, 0, data.length);
                 dos.flush();
+                fis.close();
+                dos.close();
                 System.out.println("Command " + file + " sent to Server.");
             }else
             {
@@ -178,6 +181,9 @@ public class Client {
                 dos.writeLong((long) data.length);
                 dos.write(data, 0, data.length);
                 dos.flush();
+
+
+
                 System.out.println("File " + file + " sent to Server.");
             }else
             {

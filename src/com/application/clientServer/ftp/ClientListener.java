@@ -35,7 +35,7 @@ public class ClientListener implements Runnable{
 
     @Override
     public void run() {
-while (true) {
+
 
     TcpCommand command = null;
     receiveCommand();
@@ -70,7 +70,7 @@ while (true) {
             System.out.println("Incorrect command received.");
     }
 
-}
+
     }
 
     private void sendDirectiroies() {
@@ -109,14 +109,18 @@ while (true) {
             Socket socket = serverSocket.accept();
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             fileName = dis.readUTF();
+            System.out.println("Filename "+ fileName);
             System.out.println("");
             FileOutputStream fos = new FileOutputStream(SERVER_DIR+fileName);
             long size = dis.readLong();
+            System.out.println("Size"+ size);
 
             int pointer;
             for(byte[] data = new byte[1024]; size > 0L && (pointer = dis.read(data, 0, (int)Math.min((long)data.length, size))) != -1; size -= (long)pointer) {
                 fos.write(data, 0, pointer);
             }
+fos.close();
+            dis.close();
 
             System.out.println("File " + fileName + " received from client.");
         } catch (IOException var8) {
@@ -136,6 +140,8 @@ while (true) {
             for(byte[] data = new byte[1024]; size > 0L && (pointer = dis.read(data, 0, (int)Math.min((long)data.length, size))) != -1; size -= (long)pointer) {
                 fos.write(data, 0, pointer);
             }
+           fos.close();
+            dis.close();
 
             System.out.println("Command " + fileName + " received from client.");
         } catch (IOException var8) {
